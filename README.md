@@ -28,7 +28,12 @@ This script is designed for web crawling using Playwright, a Python library for 
     pip install -r requirements.txt
     ```
 
-4. **Run the script with the desired parameters:**
+4. **Install PlayWright browsers**
+
+    ```bash
+    playwright install
+    ```
+5. **Run the script with the desired parameters:**
 
     ```bash
     python main.py <main_url> -o <output_format> --negative_crawl <keywords_to_skip_crawling> --negative_save <keywords_to_skip_saving> --log-level <log_level>
