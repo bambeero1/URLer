@@ -1,6 +1,6 @@
 # URLer Web Scraping Script
 
-This script is designed for web crawling using Playwright, a Python library for browser automation. It extracts URLs from a given website and saves them in either JSON or TXT format. It includes options to skip crawling or saving URLs containing specific keywords.
+This script is designed for web crawling using Playwright. It extracts URLs from a given website and saves them in either JSON or TXT format. It includes options to skip crawling or saving URLs containing specific keywords.
 
 ## Prerequisites
 
