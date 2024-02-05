@@ -72,7 +72,4 @@ For colored logs, the script uses `colorlog`. Log colors are based on log levels
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-Feel free to adjust it based on your specific needs.
+This project is licensed under the MIT License
