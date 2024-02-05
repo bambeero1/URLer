@@ -13,13 +13,13 @@ This script is designed for web crawling using Playwright, a Python library for 
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/web-scraping-script.git
+    git clone https://github.com/bambeero1/URLer
     ```
 
 2. **Navigate to the project directory:**
 
     ```bash
-    cd web-scraping-script
+    cd URLer
     ```
 
 3. **Install the required dependencies:**
