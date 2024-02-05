@@ -8,13 +8,11 @@ from datetime import datetime, timedelta
 from colorlog import ColoredFormatter
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)  # Set the default level to DEBUG
+logger.setLevel(logging.DEBUG)
 
 # Add a console handler for real-time display of log messages on the console
 console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setLevel(logging.DEBUG)  # Set to DEBUG for real-time display of log messages
-
-# Use colorlog's ColoredFormatter for colored logs
+console_handler.setLevel(logging.DEBUG)
 formatter = ColoredFormatter(
     "%(log_color)s%(levelname)s:%(message)s",
     datefmt=None,
@@ -29,20 +27,19 @@ formatter = ColoredFormatter(
     secondary_log_colors={},
     style='%'
 )
-
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
-def save_to_json(all_urls, website_hostname, main_url, negative_save):
+def save_to_json(unique_urls, website_hostname, main_url, negative_save):
     try:
         updated_urls = []
 
-        for url in all_urls:
+        for url in unique_urls:
             parsed_url = urlparse(url)
 
-            # Skip URL if it contains any negative_save keyword
-            if any(keyword in url for keyword in negative_save):
-                logger.debug(f"Skipping URL due to negative_save keyword: {url}")
+            # Skip URL if it contains any negative_save keyword or if the hostname is different
+            if any(keyword in url for keyword in negative_save) or parsed_url.hostname != website_hostname:
+                logger.debug(f"Skipping URL due to negative_save keyword or different hostname: {url}")
                 continue
 
             # Append domain name if not present in the URL
@@ -67,16 +64,16 @@ def save_to_json(all_urls, website_hostname, main_url, negative_save):
     except Exception as e:
         logger.error(f"Error saving to JSON: {e}")
 
-def save_to_txt(all_urls, website_hostname, main_url, negative_save):
+def save_to_txt(unique_urls, website_hostname, main_url, negative_save):
     try:
         updated_urls = []
 
-        for url in all_urls:
+        for url in unique_urls:
             parsed_url = urlparse(url)
 
-            # Skip URL if it contains any negative_save keyword
-            if any(keyword in url for keyword in negative_save):
-                logger.debug(f"Skipping URL due to negative_save keyword: {url}")
+            # Skip URL if it contains any negative_save keyword or if the hostname is different
+            if any(keyword in url for keyword in negative_save) or parsed_url.hostname != website_hostname:
+                logger.debug(f"Skipping URL due to negative_save keyword or different hostname: {url}")
                 continue
 
             # Append domain name if not present in the URL
@@ -109,17 +106,17 @@ def get_links(page_url, website_hostname, page, main_url, output_format, negativ
         for link in hrefs:
             href = link.get_attribute('href')
             full_url = urljoin(main_url, href)
+            parsed_full_url = urlparse(full_url)
 
-            # Skip URL if it contains any negative_crawl keyword
-            if any(keyword in full_url for keyword in negative_crawl):
+            # Skip URL if it contains any negative_crawl keyword or if the hostname is different
+            if any(keyword in full_url for keyword in negative_crawl) or parsed_full_url.hostname != website_hostname:
                 continue
 
             # Skip URL if it has been visited in the last 24 hours
             if full_url in last_visited_urls and datetime.now() - last_visited_urls[full_url] < timedelta(days=1):
                 continue
 
-            # Treat hrefs as URLs and add them to the all_urls set
-            logger.debug(f"Found href: {full_url}")  # Change to DEBUG level
+            logger.debug(f"Found href: {full_url}")
             all_urls.add(full_url)
 
         # Process URLs
@@ -127,7 +124,7 @@ def get_links(page_url, website_hostname, page, main_url, output_format, negativ
             new_page = urlparse(url).path
 
             if new_page not in all_urls:
-                logger.debug(f"Found new URL: {new_page}")  # Change to DEBUG level
+                logger.debug(f"Found new URL: {new_page}")
                 all_urls.add(new_page)
                 counter += 1
 
