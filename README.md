@@ -2,6 +2,10 @@
 
 This script is designed for web crawling using Playwright. It extracts URLs from a given website and saves them in either JSON or TXT format. It includes options to skip crawling or saving URLs containing specific keywords.
 
+
+https://github.com/bambeero1/URLer/assets/47931114/a6dbed5d-6b88-4c8d-8c0b-cf747581fd61
+
+
 ## Prerequisites
 
 - Python 3.x
